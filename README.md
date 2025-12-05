@@ -131,7 +131,6 @@ Common setup across all models:
 - **Loss:** `sparse_categorical_crossentropy`  
 - **Optimizer:** `Adam`  
 - **Metrics:** `accuracy`  
-- **Input Scaling:** pixel values normalized to `[0, 1]`  
 
 **Epochs:**
 - MNIST: 5 epochs  
