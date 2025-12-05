@@ -1,12 +1,10 @@
----
-
 CNN Image Classification From Scratch
 
 Using MNIST, Fashion-MNIST, and CIFAR-10
 
 1. Overview
 
-This project implements Convolutional Neural Networks (CNNs) from scratch (without using any pre-trained models) for three different image classification tasks:
+This project implements Convolutional Neural Networks (CNNs) from scratch (no pre-trained models) for three different image classification tasks:
 
 MNIST – handwritten digit classification
 
@@ -15,16 +13,7 @@ Fashion-MNIST – clothing item classification
 CIFAR-10 – object classification on RGB images
 
 
-The goal is to:
-
-Design custom CNN architectures for each dataset
-
-Train them end-to-end
-
-Evaluate their performance using multiple metrics
-
-Study how model complexity and regularization strategies change with dataset difficulty
-
+The goal is to design custom CNN architectures, train them end-to-end, and compare how model complexity and regularization change with dataset difficulty.
 
 All models are implemented using TensorFlow/Keras, with evaluation done via accuracy, classification report, and confusion matrix.
 
@@ -33,50 +22,34 @@ All models are implemented using TensorFlow/Keras, with evaluation done via accu
 
 2. Datasets Used
 
-All datasets are loaded directly from tensorflow.keras.datasets.
+All datasets are loaded directly from tensorflow.keras.datasets:
 
 2.1 MNIST
 
-Type: Handwritten digits
+60,000 training images, 10,000 test images
 
-Train images: 60,000
+Grayscale, 28×28 pixels
 
-Test images: 10,000
-
-Image size: 28 × 28 (grayscale)
-
-Classes (10): digits 0–9
+10 classes: digits 0–9
 
 
 2.2 Fashion-MNIST
 
-Type: Clothing items
+60,000 training images, 10,000 test images
 
-Train images: 60,000
+Grayscale, 28×28 pixels
 
-Test images: 10,000
-
-Image size: 28 × 28 (grayscale)
-
-Classes (10):
-T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, Ankle boot
+10 classes: T-shirt/top, trouser, pullover, dress, coat, sandal, shirt, sneaker, bag, ankle boot
 
 
 2.3 CIFAR-10
 
-Type: Natural RGB object images
+50,000 training images, 10,000 test images
 
-Train images: 50,000
+RGB, 32×32 pixels
 
-Test images: 10,000
+10 classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
 
-Image size: 32 × 32 × 3 (RGB)
-
-Classes (10):
-Airplane, Automobile, Bird, Cat, Deer, Dog, Frog, Horse, Ship, Truck
-
-
-All images are normalized to the range [0, 1] before training.
 
 
 ---
@@ -112,14 +85,10 @@ Dense(64) → ReLU
 Dense(10) → Softmax
 
 
-Parameters:
-
-Total params: 469,172
-
+Total parameters: 469,172
 Trainable params: 469,172
 
-
-This is a relatively simple CNN with two convolutional blocks followed by fully connected layers, and no explicit regularization (no Dropout / BatchNorm).
+This is a relatively simple CNN with two convolutional blocks followed by fully connected layers, without any explicit regularization (no Dropout/BatchNorm).
 
 
 ---
@@ -151,12 +120,8 @@ Dense(128) → ReLU
 Dense(10) → Softmax
 
 
-Parameters:
-
-Total params: 467,818
-
+Total parameters: 467,818
 Trainable params: 467,818
-
 
 Compared to MNIST, this model introduces Dropout after Flatten to reduce overfitting on the more challenging Fashion-MNIST dataset.
 
@@ -214,21 +179,17 @@ Dense(64) → ReLU
 Dense(10) → Softmax
 
 
-Parameters:
-
-Total params: 362,346
-
+Total parameters: 362,346
 Trainable params: 361,962
 
-
-This is the deepest model and uses Batch Normalization in the early and mid convolutional layers, plus Dropout in the dense layers to improve stability and generalization on CIFAR-10.
+This is the deepest model, using Batch Normalization in early/mid conv layers and Dropout in the dense layer. This combination stabilizes training and improves generalization on the more complex CIFAR-10 dataset.
 
 
 ---
 
 4. Training Setup
 
-Common configuration across all experiments:
+Common setup across all models:
 
 Framework: TensorFlow / Keras
 
@@ -236,9 +197,9 @@ Loss: sparse_categorical_crossentropy
 
 Optimizer: Adam
 
-Metric: accuracy
+Metrics: accuracy
 
-Input preprocessing: pixel values scaled to [0, 1]
+Input Scaling: pixel values normalized to [0, 1]
 
 
 Epochs:
@@ -247,10 +208,10 @@ MNIST: 5 epochs
 
 Fashion-MNIST: 10 epochs
 
-CIFAR-10: up to 20 epochs with EarlyStopping on val_loss
+CIFAR-10: up to 20 epochs with EarlyStopping based on val_loss
 
 
-For CIFAR-10, EarlyStopping is used to stop training when validation loss stops improving, preventing overfitting and unnecessary computation.
+For CIFAR-10, EarlyStopping was used to avoid overfitting once the validation loss stopped improving.
 
 
 ---
@@ -261,18 +222,18 @@ For CIFAR-10, EarlyStopping is used to stop training when validation loss stops 
 
 Epochs: 5
 
-Final validation accuracy: ≈ 98.6%
+Final Validation Accuracy: ~98.6%
 
-Test accuracy: ≈ 98.5%
+Test Accuracy: ~98.5%
 
-Test loss: ≈ 0.056
+Test Loss: ~0.056
 
 
-Classification report (summary):
+Classification Report Highlights:
 
-Precision, Recall, F1-score for all classes: ~0.98–0.99
+Precision, Recall, F1-score ≈ 0.98–0.99 for all classes
 
-Overall accuracy: ~99%
+Overall accuracy ≈ 99%
 
 Correctly classified: 9,857 / 10,000
 
@@ -285,7 +246,7 @@ Even without Dropout or BatchNorm, the CNN performs extremely well due to the si
 
 Training and validation accuracies are very close, indicating low overfitting.
 
-A relatively shallow CNN is sufficient to achieve high performance on this dataset.
+This confirms that a relatively shallow CNN is sufficient for MNIST.
 
 
 
@@ -295,20 +256,20 @@ A relatively shallow CNN is sufficient to achieve high performance on this datas
 
 Epochs: 10
 
-Final validation accuracy: ≈ 92.8%
+Final Validation Accuracy: ~92.8%
 
-Test accuracy: ≈ 92.4%
+Test Accuracy: ~92.4%
 
-Test loss: ≈ 0.23–0.25
+Test Loss: ~0.23–0.25
 
 
-Classification report (summary):
+Classification Report Highlights:
 
 Overall accuracy: 92%
 
-Most classes have Precision/Recall in the range 0.90–0.99
+Most classes have Precision/Recall ≈ 0.90–0.99
 
-Class 6 (shirt) has a lower F1-score (~0.78), as it is visually similar to other tops/shirts.
+Class 6 (shirt) has slightly lower F1-score (~0.78), which is expected since it is visually similar to other clothing categories.
 
 Correctly classified: 9,240 / 10,000
 
@@ -319,7 +280,7 @@ Observations:
 
 Adding Dropout helped control overfitting and improved generalization.
 
-Accuracy is lower than MNIST, which is expected due to the higher complexity of Fashion-MNIST.
+Performance is slightly lower than MNIST, reflecting the higher difficulty of Fashion-MNIST.
 
 The model still achieves strong performance above 92% accuracy.
 
@@ -331,25 +292,25 @@ The model still achieves strong performance above 92% accuracy.
 
 Epochs: up to 20 (with EarlyStopping)
 
-Best validation accuracy: ≈ 75–76%
+Best Validation Accuracy: ~75–76%
 
-Test accuracy: ≈ 74.0%
+Test Accuracy: ~74.0%
 
-Test loss: ≈ 0.79
+Test Loss: ~0.79
 
 
-Classification report (summary):
+Classification Report Highlights:
 
 Overall accuracy: 74%
 
-Stronger performance on:
+Strong performance on:
 
-Vehicle-like classes (e.g., automobile, ship, truck)
+Class 1 (automobile), Class 8 (ship), Class 9 (truck)
 
 
-Weaker performance on:
+Lower performance on:
 
-Animal classes (e.g., bird, cat, deer, dog) – these are more visually similar and harder to separate
+Class 2 (bird), Class 3 (cat), Class 4 (deer), Class 5 (dog) – these are visually more similar and harder to separate.
 
 
 Correctly classified: 7,404 / 10,000
@@ -359,13 +320,13 @@ Incorrectly classified: 2,596
 
 Observations:
 
-CIFAR-10 is significantly more challenging than MNIST and Fashion-MNIST.
+CIFAR-10 is significantly more challenging due to color images and complex object shapes.
 
-Batch Normalization improves stability and allows deeper architectures to train effectively.
+Batch Normalization stabilized training and allowed deeper architecture.
 
-Dropout + EarlyStopping help reduce overfitting, but the accuracy remains lower due to dataset complexity and the absence of data augmentation or pre-trained backbones.
+Dropout + EarlyStopping helped reduce overfitting, but accuracy is still lower than MNIST/Fashion-MNIST, which is expected for a scratch CNN without pretraining.
 
-The model behavior is realistic: structured objects like vehicles are easier; animals with similar textures/shapes are harder.
+The model shows realistic class-wise behavior: animals are harder, vehicles are easier.
 
 
 
@@ -373,27 +334,29 @@ The model behavior is realistic: structured objects like vehicles are easier; an
 
 6. Improvements and Tuning Tried
 
-Across the three datasets, the following changes and experiments were made:
+Across the three experiments:
 
-Baseline CNN (MNIST):
+Started with a basic CNN on MNIST (no regularization) to understand baseline behavior.
 
-Started with a simple CNN without explicit regularization to establish a strong baseline on an easier dataset.
+Added Dropout for Fashion-MNIST to combat mild overfitting and observed improvement in generalization.
+
+For CIFAR-10:
+
+Introduced Batch Normalization after convolutional layers to stabilize and speed up training.
+
+Added Dropout in dense layers to reduce overfitting.
+
+Used EarlyStopping to stop training when validation loss stopped improving, preventing unnecessary overfitting and saving compute.
 
 
-Dropout (Fashion-MNIST):
 
-Introduced Dropout after the Flatten layer to reduce overfitting.
+Potential Future Improvements (Not implemented but possible):
 
-Helped improve validation and test performance compared to a plain CNN.
+Data augmentation for CIFAR-10 (random flips, shifts, etc.)
 
+Learning rate scheduling (e.g., ReduceLROnPlateau)
 
-BatchNorm + Dropout + EarlyStopping (CIFAR-10):
-
-Added Batch Normalization after Conv layers to stabilize and speed up training.
-
-Used Dropout in the Dense layer to improve generalization.
-
-Applied EarlyStopping based on validation loss to prevent overfitting and save time.
+Deeper architectures or residual connections for CIFAR-10
 
 
 
@@ -433,24 +396,12 @@ Project description, model summaries, results, and observations
 
 pip install tensorflow numpy matplotlib scikit-learn
 
-2. Open any of the notebooks in Jupyter, VS Code, or Google Colab:
-
-CNN_from_Scratch_on_MNIST_Data.ipynb
-
-CNN_from_sractch_on_Fashion_MNIST_with_Dropout.ipynb
-
-CNN_from_Sractch_on_Cifar10_Data.ipynb
+2. Run the notebooks in your preferred environment (Jupyter, Google Colab, etc.)
 
 
-
-3. Run all cells in order to:
-
-Load the dataset
-
-Build the CNN model
-
-Train, evaluate, and visualize results
+3. Make sure you're using Python 3.6+ and have the required packages installed.
 
 
 
 
+---
